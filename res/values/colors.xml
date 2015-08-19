@@ -7,4 +7,9 @@
     <color name="exam_and_account_bg">#ffcc33</color>
     <color name="famous_book_bg">#9755f6</color>
     <color name="best_head_bg">#fe864b</color>
+    <color name="user_manager_bg">#0fc4d9</color>
+    <color name="my_download_bg">#84d018</color>
+    <color name="sys_setting_bg">#c8d900</color>
+    <color name="about_us_bg">#22ad38</color>
+
 </resources>

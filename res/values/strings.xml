@@ -8,6 +8,10 @@
     <string name="exam_room">模拟考场</string>
     <string name="famous_book">文学名著</string>
     <string name="best_head">最强大脑</string>
-    
+    <string name="user_manager">用户管理</string>
+    <string name="money_pay">用户充值</string>
+    <string name="my_download">下载管理</string>
+    <string name="sys_setting">系统设置</string>
+    <string name="about_us">关于我们</string>
 
 </resources>

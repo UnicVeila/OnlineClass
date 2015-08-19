@@ -24,9 +24,9 @@
             android:orientation="vertical" >
 
             <include
-                android:id="@+id/layout_head_ad"
-                android:layout_width="match_parent"
-                android:layout_height="0dip"
+                android:id="@+id/layout_ad"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
                 android:layout_marginLeft="@dimen/main_layout_margin"
                 android:layout_marginRight="@dimen/main_layout_margin"
                 android:layout_weight="1"
@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/main_layout_margin"
-                    android:layout_marginRight="@dimen/main_layout_margin"
+                    android:layout_marginRight="@dimen/main_button_margin"
                     android:layout_weight="1"
                     layout="@layout/view_syn_tech" />
 
@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/main_button_margin"
-                    android:layout_marginRight="@dimen/main_button_margin"
+                    android:layout_marginRight="@dimen/main_layout_margin"
                     android:layout_weight="2" >
 
                     <LinearLayout
@@ -91,7 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/main_layout_margin"
-                    android:layout_marginRight="@dimen/main_layout_margin"
+                    android:layout_marginRight="@dimen/main_button_margin"
                     android:layout_weight="2" >
 
                     <LinearLayout
@@ -127,6 +127,157 @@
                     android:layout_marginRight="@dimen/main_layout_margin"
                     android:layout_weight="1"
                     layout="@layout/view_best_head" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/main_layout_padding" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_layout_margin"
+                    android:layout_marginRight="@dimen/main_button_margin"
+                    android:layout_weight="1" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_menu_bg_height"
+                        android:background="@color/user_manager_bg"
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/user_selector"
+                            android:contentDescription="@string/app_name" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="@dimen/main_title_text_padding"
+                        android:paddingLeft="@dimen/main_title_text_padding"
+                        android:text="@string/user_manager"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/main_title_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_button_margin"
+                    android:layout_marginRight="@dimen/main_button_margin"
+                    android:layout_weight="1" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_pay"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_menu_bg_height"
+                        android:background="@color/exam_and_account_bg"
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/money_selector"
+                            android:contentDescription="@string/app_name" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="@dimen/main_title_text_padding"
+                        android:paddingLeft="@dimen/main_title_text_padding"
+                        android:text="@string/money_pay"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/main_title_text_size" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_button_margin"
+                    android:layout_marginRight="@dimen/main_layout_margin"
+                    android:layout_weight="1" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_download"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_menu_bg_height"
+                        android:background="@color/my_download_bg"
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/my_download_selector" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="@dimen/main_title_text_padding"
+                        android:paddingLeft="@dimen/main_title_text_padding"
+                        android:text="@string/my_download"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/main_title_text_size" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/main_layout_padding"
+                android:paddingTop="@dimen/main_layout_padding" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_layout_margin"
+                    android:layout_marginRight="@dimen/main_button_margin"
+                    android:layout_weight="2" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_setting"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/tab_menu_bg_height"
+                        android:background="@color/sys_setting_bg"
+                        android:gravity="center" >
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/setting_selector" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:paddingBottom="@dimen/main_title_text_padding"
+                        android:paddingLeft="@dimen/main_title_text_padding"
+                        android:text="@string/sys_setting"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/main_title_text_size" />
+                </RelativeLayout>
+
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/main_button_margin"
+                    android:layout_marginRight="@dimen/main_layout_margin" 
+                    android:layout_weight="1"
+                    layout="@layout/view_about_us"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
