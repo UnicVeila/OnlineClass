@@ -1,22 +1,28 @@
 package com.example.onlineclass;
 
+import java.util.ArrayList;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.onlineclass.activity.BaseActivity;
+import com.example.onlineclass.utils.AppConstant;
+import com.example.onlineclass.view.SlideImageViewLayout;
 
 /**
  * @author anumbrella
  * 
  * @date 2015-8-10 下午4:52:51
  * 
- *       应用程序的入口
+ *       MainActivity类
  */
 public class MainActivity extends BaseActivity implements OnClickListener {
 
@@ -52,6 +58,30 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 * 事件处理Handler
 	 */
 	private Handler handler;
+
+	/**
+	 * 图片轮播图片序列数组
+	 */
+	private ArrayList<View> imagePagerViewList;
+
+	private ViewPager viewPager = null;
+
+	/**
+	 * 设置图片选着标点的存储数组
+	 */
+	private ImageView[] imageCircleViews;
+
+	/**
+	 * 图片选着标点的布局存储视图
+	 */
+	private ViewGroup imageCircleGroupView;
+
+	/**
+	 * 轮播图片类
+	 * 
+	 * @param savedInstanceState
+	 */
+	private SlideImageViewLayout slideImageViewLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -113,9 +143,12 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	// 初始化头部的轮播
 	private void initHeadAd() {
 		// TODO Auto-generated method stub
-		
-		
-		
+		imagePagerViewList = new ArrayList<View>();
+		viewPager = (ViewPager) findViewById(R.id.imgae_slide_pager);
+		int count = AppConstant.imageUrl.length;
+		imageCircleViews = new ImageView[count];
+		// 获取图标选着点显示的位置布局
+		imageCircleGroupView = (ViewGroup) findViewById(R.id.layout_circle_images);
 
 	}
 
