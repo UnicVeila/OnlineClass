@@ -1,9 +1,18 @@
 package com.example.onlineclass.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
@@ -23,9 +32,31 @@ public class HandleImage {
 	 *            图片资源
 	 * @return
 	 */
-	public static Bitmap getRoundedCornerbitmap(Bitmap bitMap) {
-
-		return null;
+	public static Bitmap getRoundedCornerbitmap(Bitmap bitmap) {
+		Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(outBitmap);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		// rect的精度是int
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		// rectf的精度是float
+		final RectF rectF = new RectF(rect);
+		float roundPx = 90; // 圆角的角度
+		paint.setAntiAlias(true);
+		// 黑色画布(不透明)
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+		/**
+		 * 设置图像的相交模式 这是一个非常强大的转换模式，使用它， 可以使用图像合成的16条Porter-Duff规则的任意
+		 * 一条来控制Paint如何与已有的Canvas图像进行交互。 在两者相交的地方绘制源图像，并且绘制的效果会受到目标图像对应地方透明度的影响
+		 * (绘制出来的图像只有源图)
+		 * */
+		paint.setXfermode(new PorterDuffXfermode(
+				android.graphics.PorterDuff.Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+		return outBitmap;
 	}
 
 	/**
@@ -37,22 +68,60 @@ public class HandleImage {
 	 *            图片角度
 	 * @return
 	 */
-	public static Bitmap getRoundedCornerbitmap(Bitmap bitMap, float angle) {
+	public static Bitmap getRoundedCornerbitmap(Bitmap bitmap, float angle) {
 
-		return null;
+		Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(outBitmap);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		// rect的精度是int
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		// rectf的精度是float
+		final RectF rectF = new RectF(rect);
+		paint.setAntiAlias(true);
+		// 黑色画布(不透明)
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, angle, angle, paint);
+		/**
+		 * 设置图像的相交模式 这是一个非常强大的转换模式，使用它， 可以使用图像合成的16条Porter-Duff规则的任意
+		 * 一条来控制Paint如何与已有的Canvas图像进行交互。 在两者相交的地方绘制源图像，并且绘制的效果会受到目标图像对应地方透明度的影响
+		 * (绘制出来的图像只有源图)
+		 * */
+		paint.setXfermode(new PorterDuffXfermode(
+				android.graphics.PorterDuff.Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+		return outBitmap;
 	}
 
 	/**
 	 * 
-	 * 根据路径获得图片并压缩返回bitMap用于显示(不可以自定义高宽)
+	 * 根据路径获得图片并压缩返回Bitmap用于显示(不可以自定义高宽)
 	 * 
 	 * @param filePath
 	 *            图片路径
 	 * @return
 	 */
 	public static Bitmap getSmallbitmap(String filePath) {
+		final BitmapFactory.Options openOptions = new BitmapFactory.Options();
+		// 不会返回Bitmap,仅仅返回一个宽和高的数据
+		openOptions.inJustDecodeBounds = true;
+		// 定义缩放的比例
+		openOptions.inSampleSize = 2;
 
-		return null;
+		// 为了防止OOM(内存溢出)设置
+		openOptions.inJustDecodeBounds = false;
+		// 不进行图片抖动处理
+		openOptions.inDither = false;
+		// 设置让编码器以最佳的方式解码
+		openOptions.inPreferredConfig = null;
+
+		openOptions.inPurgeable = true;
+		openOptions.inInputShareable = true;
+
+		// 该方法在图片很大时可能出现内存溢出情况
+		return BitmapFactory.decodeFile(filePath, openOptions);
 	}
 
 	/**
@@ -68,34 +137,70 @@ public class HandleImage {
 	 */
 	public static Bitmap getSmallbitmap(String filePath, int width, int height) {
 
-		return null;
+		final BitmapFactory.Options openOptions = new BitmapFactory.Options();
+		// 不会返回Bitmap,仅仅返回一个宽和高的数据
+		openOptions.inJustDecodeBounds = true;
+		// 定义缩放的比例
+		openOptions.inSampleSize = calculateInSampleSize(openOptions, width,
+				height);
+
+		// 为了防止OOM(内存溢出)设置
+		openOptions.inJustDecodeBounds = false;
+		// 不进行图片抖动处理
+		openOptions.inDither = false;
+		// 设置让编码器以最佳的方式解码
+		openOptions.inPreferredConfig = null;
+
+		openOptions.inPurgeable = true;
+		openOptions.inInputShareable = true;
+
+		// 该方法在图片很大时可能出现内存溢出情况
+		return BitmapFactory.decodeFile(filePath, openOptions);
 	}
 
 	/**
 	 * 
 	 * 计算图片的缩放值
 	 * 
-	 * @return
+	 * @return 返回缩放率
 	 */
-	public static int calculateInSampleSize() {
+	public static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+		// 所返回的Bitmap的宽和高
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		// 默认情况下保持原来的比例不变
+		int inSampleSize = 1;
+		if (reqHeight > height || reqWidth > width) {
 
-		return 0;
+			final int heightRatio = Math.round((float) height
+					/ (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+			// 两个比例中取最小的缩放比例
+			inSampleSize = widthRatio > heightRatio ? heightRatio : widthRatio;
+
+		}
+
+		return inSampleSize;
 	}
 
 	/**
-	 * 把bitMap转换为String
+	 * 将Bitmap保存到本地
 	 * 
-	 * @return
+	 * @param bitmap   原图资源
+	 * @param imagePath  图片资源
+	 * @param imageType  图片类型PNG、JPEG
 	 */
-	public static String bitmapToString() {
-
-		return null;
-	}
-
-	/**
-	 * 将bitMap保存到本地
-	 */
-	public static void savebitmap() {
+	public static void savebitmap(Bitmap bitmap, String imagePath,
+			String imageType) {
+		try {
+			File file = new File(imagePath);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
 
 	}
 
