@@ -93,7 +93,11 @@ public class AppLog {
 	 */
 	private static void point(String logPointPath, String tag, String message) {
 		// TODO Auto-generated method stub
-
+		//判断手机是否支持SDCard
+		if(HandlePhone.ExistSDCard()){
+			
+		}
+		
 	}
 
 }
