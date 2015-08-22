@@ -1,8 +1,13 @@
 package com.example.onlineclass.utils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import android.R.integer;
 import android.graphics.Bitmap;
@@ -24,6 +29,11 @@ import android.graphics.drawable.Drawable;
  *       图片处理类(封装包含各种图片处理方法)
  */
 public class HandleImage {
+
+	/**
+	 * 日志tag
+	 */
+	private static final String TAG = "HandleImage";
 
 	/**
 	 * 把图片转换为圆角(不能自定义角度)
@@ -188,29 +198,131 @@ public class HandleImage {
 	/**
 	 * 将Bitmap保存到本地
 	 * 
-	 * @param bitmap   原图资源
-	 * @param imagePath  图片资源
-	 * @param imageType  图片类型PNG、JPEG
+	 * @param bitmap
+	 *            原图资源
+	 * @param imagePath
+	 *            保存图片资源(不是路径)
+	 * @param imageType
+	 *            图片类型PNG、JPEG
 	 */
 	public static void savebitmap(Bitmap bitmap, String imagePath,
 			String imageType) {
 		try {
 			File file = new File(imagePath);
-			
+			// 传入的要是一个文件(可以虚构)
+			FileUtil.createDipPath(imagePath);
+			FileOutputStream outputStream = new FileOutputStream(file);
+			if ("PNG".equalsIgnoreCase(imageType)) {
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+			} else if ("JPG".equalsIgnoreCase(imagePath)
+					|| "JPEG".equalsIgnoreCase(imageType)) {
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+			} else if ("WEBP".equalsIgnoreCase(imageType)) {
+				bitmap.compress(Bitmap.CompressFormat.WEBP, 100, outputStream);
+			} else {
+				AppLog.e(TAG, "图片保存失败,无法确定图片类型。类型为:" + imageType);
+			}
+			outputStream.flush();
+			outputStream.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
-		
 
 	}
 
 	/**
-	 * 根据指定的大小压缩图片
+	 * 将Bitmap保存到本地,可以指定图片保存的质量
 	 * 
+	 * @param bitmap
+	 *            原图资源
+	 * @param imagePath
+	 *            保存图片资源
+	 * @param quality
+	 *            保存图片的质量
+	 * 
+	 *            默认保存为WEBP格式
 	 * @return
 	 */
-	public static String compressImage() {
-		return null;
+	public static void savebitmap(Bitmap bitmap, String imagePath, int quality) {
+		File file = new File(imagePath);
+		FileUtil.createDipPath(imagePath);
+		FileOutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		bitmap.compress(Bitmap.CompressFormat.WEBP, quality, outputStream);
+		try {
+			outputStream.flush();
+			outputStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 按默认比例压缩图片 默认大小为480x800
+	 * 
+	 * @param sourceImagePath
+	 *            原图片资源
+	 * @param outDirectory
+	 *            目标路径
+	 * @return 压缩后的图片路径,如果没有压缩，返回原路径
+	 */
+	public static String compressImage(String sourceImagePath,
+			String outDirectory) {
+		int maxWidth = 480;
+		int maxHeight = 800;
+		// 压缩后图片的路径
+		String compressImagePath = null;
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(sourceImagePath, options);
+		// 定义缩放比例
+		double ratio = 1;
+		if (options.outHeight < options.outWidth && options.outWidth > maxWidth) {
+			ratio = options.outWidth / maxWidth;
+		} else if (options.outHeight > options.outHeight
+				&& options.outHeight > maxHeight) {
+			ratio = options.outHeight / maxHeight;
+		} else {
+			return sourceImagePath;
+		}
+
+		BitmapFactory.Options newOptions = new BitmapFactory.Options();
+		newOptions.inSampleSize = (int) (ratio + 1);
+		newOptions.outHeight = (int) (options.outHeight / ratio);
+		newOptions.outWidth = (int) (options.outWidth / ratio);
+		Bitmap bitmap = BitmapFactory.decodeFile(sourceImagePath, newOptions);
+		compressImagePath = outDirectory
+				+ UUID.randomUUID()
+				+ sourceImagePath.substring(sourceImagePath.lastIndexOf("."),
+						sourceImagePath.length());
+		File outFile = new File(compressImagePath);
+		try {
+			File parentPath = outFile.getParentFile();
+			if (!parentPath.exists()) {
+				parentPath.mkdirs();
+			}
+			outFile.createNewFile();
+			FileOutputStream outputStream = new FileOutputStream(outFile);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+			outputStream.close();
+			// 回收机制(实际是促使底层释放内存)
+			bitmap.recycle();
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return compressImagePath;
 	}
 
 	/**

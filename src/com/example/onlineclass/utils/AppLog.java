@@ -1,5 +1,14 @@
 package com.example.onlineclass.utils;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import android.util.Log;
 
 /**
@@ -93,11 +102,72 @@ public class AppLog {
 	 */
 	private static void point(String logPointPath, String tag, String message) {
 		// TODO Auto-generated method stub
-		//判断手机是否支持SDCard
-		if(HandlePhone.ExistSDCard()){
-			
+		// 判断手机是否支持SDCard
+		if (HandlePhone.ExistSDCard()) {
+			Date date = new Date();
+			SimpleDateFormat dataFormat = new SimpleDateFormat("",
+					Locale.SIMPLIFIED_CHINESE);
+			// 设置显示的时间格式
+			dataFormat.applyPattern("yyyy");
+			logPointPath = logPointPath + dataFormat.format(date) + "/";
+			dataFormat.applyPattern("MM");
+			logPointPath = logPointPath + dataFormat.format(date) + "/";
+			dataFormat.applyPattern("dd");
+			logPointPath += dataFormat.format(date) + ".log";
+			dataFormat.applyPattern("[yyyy-MM-dd HH:mm:ss]");
+			String time = dataFormat.format(date);
+			File file = new File(logPointPath);
+			if (!file.exists()) {
+				// 创建文件
+				createFileByPath(logPointPath);
+			}
+			BufferedWriter out = null;
+			try {
+				// 参数true表示文件存在，不会删除，在原文件上追加内容
+				out = new BufferedWriter(new OutputStreamWriter(
+						new FileOutputStream(file, true)));
+				out.write(time + " " + tag + " " + message + "\r\n");
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			} finally {
+				try {
+					if (out != null) {
+						out.close();
+					}
+				} catch (IOException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
 		}
-		
+	}
+
+	/**
+	 * 根据文件路径创建新的文件
+	 * 
+	 * @param logPointPath
+	 */
+	private static void createFileByPath(String filePath) {
+		// TODO Auto-generated method stub
+		String parentFilePath = filePath
+				.substring(0, filePath.lastIndexOf("/"));
+		File originalFile = new File(filePath);
+		File parentFile = new File(parentFilePath);
+		// 如果源文件不存在
+		if (!originalFile.exists()) {
+			parentFile.mkdirs();
+			try {
+				// 创建新文件
+				originalFile.createNewFile();
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+
+		}
+
 	}
 
 }

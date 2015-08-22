@@ -173,7 +173,7 @@ public class ImageLoaderUtil {
 						 * 150; 结论：宽缩放了多少，那么高也缩放多少。
 						 */
 						compressHeight = (float) bitmap.getHeight()
-								/ ((float) bitmap.getWidth() / compressWidth);
+								/ ((float) bitmap.getWidth() / (float)compressWidth);
 						// 生成新的缩放的图片
 						bitmap = Bitmap
 								.createScaledBitmap(bitmap,
