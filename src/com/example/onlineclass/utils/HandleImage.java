@@ -5,11 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import android.R.integer;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -302,7 +305,7 @@ public class HandleImage {
 		newOptions.outWidth = (int) (options.outWidth / ratio);
 		Bitmap bitmap = BitmapFactory.decodeFile(sourceImagePath, newOptions);
 		compressImagePath = outDirectory
-				+ UUID.randomUUID()
+				+ UUID.randomUUID().toString()
 				+ sourceImagePath.substring(sourceImagePath.lastIndexOf("."),
 						sourceImagePath.length());
 		File outFile = new File(compressImagePath);
@@ -333,8 +336,21 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Bitmap getbitmap(String url, String localPath) {
+		Bitmap bitmap = null;
+		File file = new File(localPath);
+		if (file.exists()) {
+			try {
+				FileInputStream inputStream = new FileInputStream(file);
+				bitmap = BitmapFactory.decodeStream(inputStream);
 
-		return null;
+			} catch (FileNotFoundException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		} else {
+			bitmap = getHttpBitmap(url);
+		}
+		return bitmap;
 	}
 
 	/**
@@ -344,8 +360,32 @@ public class HandleImage {
 	 * @param url
 	 * @return
 	 */
-	public static Bitmap getbitmap(String url) {
-		return null;
+	public static Bitmap getHttpBitmap(String url) {
+		URL myFileUrl = null;
+		Bitmap bitmap = null;
+		try {
+			myFileUrl = new URL(url);
+			// 获得图片链接
+			HttpURLConnection conn = (HttpURLConnection) myFileUrl
+					.openConnection();
+			// 设置超时连接 conn.setConnectionTiem(0);表示没有时间限制
+			conn.setConnectTimeout(6000);
+			conn.setDoInput(true); // 设置可以获得数据流
+			// 设置不使用缓存
+			conn.setUseCaches(false);
+			// 连接
+			conn.connect();
+			// 获取数据流(输入流)
+			InputStream inputStream = conn.getInputStream();
+			// 解析图片
+			bitmap = BitmapFactory.decodeStream(inputStream);
+			// 关闭数据流
+			inputStream.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return bitmap;
 	}
 
 	/**
@@ -356,30 +396,164 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Bitmap getLocalBitmap(String localPath) {
-		return null;
+		File file = new File(localPath);
+		Bitmap bitmap = null;
+		if (file.exists()) {
+			try {
+				FileInputStream inputStream = new FileInputStream(file);
+				bitmap = BitmapFactory.decodeStream(inputStream);
+			} catch (FileNotFoundException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
+
+		return bitmap;
 	}
 
 	/**
-	 * 复制分享app图片到本地目录
+	 * 复制分享图片到本地目录
 	 * 
+	 * @param context
+	 *            环境变量
+	 * @param imageFromPath
+	 *            原图的资源int值
+	 * @param toPath
+	 *            目标图片路径
 	 * @return
 	 */
-	public static boolean copyAppFileToSDCard() {
+	public static boolean copyAppFileToSDCard(Context context,
+			int imageFromPath, String toPath) {
+		// 设定复制的结果
+		boolean copyResult = true;
+		try {
+			FileUtil.createDipPath(toPath);
+			InputStream inputStream = context.getResources().openRawResource(
+					imageFromPath);
+			FileOutputStream outputStream = new FileOutputStream(new File(
+					toPath));
+			// 定义读取数组大小
+			byte[] b = new byte[8 * 1024];
+			int length = 0;
+			while ((length = inputStream.read(b)) != -1) {
+				outputStream.write(b, 0, length);
+			}
+			inputStream.close();
+			outputStream.close();
 
-		return false;
+		} catch (Exception e) {
+			// TODO: handle exception
+			copyResult = false;
+		}
+
+		return copyResult;
 	}
 
 	/**
 	 * 批量图片压缩到指定目录
 	 * 
-	 * @param images
+	 * @param imagePaths
+	 *            图片路径数组
 	 * @param compressDir
+	 *            要压缩的目录
 	 * @return
 	 */
-	public static ArrayList<String> compressImage(List<String> images,
+	public static ArrayList<String> compressImage(List<String> imagePaths,
 			String compressDir) {
+		if (imagePaths == null) {
+			return null;
+		}
+		// 定义图片最大尺寸 300KB
+		int maxSize = 300 * 1024;
+		ArrayList<String> resultImagePaths = new ArrayList<String>();
+		for (int i = 0; i < imagePaths.size(); i++) {
+			String imagePath = imagePaths.get(i);
+			File file = new File(imagePath);
+			if (file.exists()) {
+				// 获得图片文件的大小(byte)单位
+				long length = file.length();
+				if (length > maxSize) {
+					BitmapFactory.Options options = new BitmapFactory.Options();
+					// 获取原图的高和宽
+					options.inJustDecodeBounds = true;
+					// 此时所返回的值为null,即bitmap为空
+					Bitmap bitmap = BitmapFactory
+							.decodeFile(imagePath, options);
 
-		return null;
+					int sourceWidth = options.outWidth;
+					int sourceHeight = options.outHeight;
+
+					// 根据主流手机设定缩放参考的比例(主流手机比较多是800*480分辨率)
+					float compressWidth = 800f;
+					float compressHeight = 480f;
+
+					// 定义缩放率
+					int ratio = 1;
+
+					if (sourceWidth > sourceHeight
+							&& sourceWidth > compressWidth) {
+						ratio = (int) (sourceWidth / compressWidth);
+					} else if (sourceHeight > sourceWidth
+							&& sourceHeight > compressHeight) {
+						ratio = (int) (sourceHeight / compressHeight);
+					}
+					if (ratio <= 0) {
+						ratio = 1;
+					}
+					// 设置图片的缩放比例
+					options.inSampleSize = ratio;
+
+					options.inJustDecodeBounds = false;
+					// 获得压缩的图片
+					bitmap = BitmapFactory.decodeFile(imagePath, options);
+
+					// 将图片保存
+					String fileName = file.getName();
+					String newFileName = null;
+					if (fileName.indexOf(".") > 0) {
+						newFileName = compressDir
+								+ UUID.randomUUID().toString()
+								+ fileName.substring(fileName.lastIndexOf("."),
+										fileName.length());
+					} else {
+						newFileName = compressDir
+								+ UUID.randomUUID().toString() + ".jpg";
+					}
+
+					File saveNewFile = new File(newFileName);
+					FileUtil.createDipPath(newFileName);
+					FileOutputStream outputStream = null;
+					try {
+						outputStream = new FileOutputStream(saveNewFile);
+					} catch (FileNotFoundException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+					// 开始压缩图片(默认图片全部压缩为JPEG)
+					bitmap.compress(Bitmap.CompressFormat.JPEG, 100,
+							outputStream);
+					try {
+						outputStream.flush();
+						outputStream.close();
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+					resultImagePaths.add(newFileName);
+				} else {
+					String newFileName = compressDir
+							+ UUID.randomUUID().toString()
+							+ imagePath.substring(imagePath.lastIndexOf("."),
+									imagePath.length());
+					FileUtil.copyFile(imagePath, newFileName);
+					resultImagePaths.add(newFileName);
+				}
+
+			}
+
+		}
+
+		return resultImagePaths;
 	}
 
 	/**
