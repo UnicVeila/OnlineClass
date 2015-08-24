@@ -1,5 +1,7 @@
 package com.example.onlineclass.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,12 +19,16 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 
 /**
  * @author anumbrella
@@ -557,45 +563,158 @@ public class HandleImage {
 	}
 
 	/**
+	 * Bitmap图片压缩(按质量压缩)
 	 * 
-	 * bitMap图片压缩
-	 * 
+	 * @param bitmap
 	 * @return
 	 */
-	public static Bitmap comp() {
-		return null;
+	public static Bitmap comp(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		// 把图片数据流写入到ByteArrayOutputStream的输出流当中
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+		// 如果图片的大小大于512kb就进行压缩,避免（BitmapFactory.decodeStream）时溢出
+		if (baos.toByteArray().length / 1024 > 512) {
+			// 清空baos
+			baos.reset();
+			// 对图片进行一半的压缩
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+		}
+
+		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		// 此时imageBitmap为空
+		Bitmap imageBitmap = BitmapFactory.decodeStream(bais);
+
+		int width = options.outWidth;
+		int height = options.outHeight;
+
+		// 现在主流手机比较多是800*480分辨率
+		float compressWidth = 480f;
+		float compressHeight = 800f;
+
+		int ratio = 1;
+		if (width > height && width > compressWidth) {
+			ratio = (int) (width / compressWidth);
+		} else if (height > width && height > compressHeight) {
+			ratio = (int) (height / compressHeight);
+		}
+
+		if (ratio <= 0) {
+			ratio = 1;
+		}
+		options.inSampleSize = ratio;
+		options.inJustDecodeBounds = false;
+		bais = new ByteArrayInputStream(baos.toByteArray());
+		imageBitmap = BitmapFactory.decodeStream(bais, null, options);
+		try {
+			bais.close();
+			baos.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return compressImage(imageBitmap, 100); // 图片质量进行压缩(图片资源,图片大小)
+	}
+
+	/**
+	 * 图片压缩(根据图片的大小进行压缩)
+	 * 
+	 * @param bitmap
+	 *            原图资源
+	 * @param size
+	 *            图片大小(kb)
+	 * @return
+	 */
+	private static Bitmap compressImage(Bitmap bitmap, int size) {
+		// TODO Auto-generated method stub
+		try {
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			// 解析图片
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+			int options = size;
+			// 如果压缩的图片大于size继续压缩
+			while (baos.toByteArray().length / 1024 > size) {
+				baos.reset();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);
+				// 每次减少10kb
+				options -= 10;
+			}
+			ByteArrayInputStream bais = new ByteArrayInputStream(
+					baos.toByteArray());
+			Bitmap imageBitmap = BitmapFactory.decodeStream(bais, null, null);
+			baos.close();
+			bais.close();
+			return imageBitmap;
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+
 	}
 
 	/**
 	 * 本地图片压缩
 	 * 
+	 * @param SDCardImagePath
+	 *            本地图片地址
 	 * @return
 	 */
-	public static Bitmap compressLocalImage() {
+	public static Bitmap compressLocalImage(String SDCardImagePath) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		// 读入图片的数据
+		options.inJustDecodeBounds = true;
+		Bitmap bitmap = BitmapFactory.decodeFile(SDCardImagePath); // 此时bitmap返回为空
 
-		return null;
-	}
+		int width = options.outWidth;
+		int height = options.outHeight;
 
-	/**
-	 * 图片质量压缩
-	 * 
-	 * @param bitmap
-	 * @param size
-	 * @return
-	 */
-	public static Bitmap compressQualityImage(Bitmap bitmap, int size) {
-		return null;
+		// 现在主流手机比较多是800*480分辨率
+		float compressWidth = 480f;
+		float compressHeight = 800f;
+
+		int ratio = 1;
+		if (width > height && width > compressWidth) {
+			ratio = (int) (width / compressWidth);
+		} else if (height > width && height > compressHeight) {
+			ratio = (int) (height / compressHeight);
+		}
+
+		if (ratio <= 0) {
+			ratio = 1;
+		}
+		options.inSampleSize = ratio;
+		options.inJustDecodeBounds = false;
+		bitmap = BitmapFactory.decodeFile(SDCardImagePath, options);
+		return compressImage(bitmap, 100); // 再对图片的大小进行压缩
 	}
 
 	/**
 	 * 旋转图片
 	 * 
 	 * @param angle
+	 *            旋转角度
 	 * @param bitmap
+	 *            原图资源
 	 * @return
 	 */
 	public static Bitmap rotateImageView(int angle, Bitmap bitmap) {
-		return null;
+		if (bitmap == null) {
+			return null;
+		}
+		// 定义矩阵旋转图片
+		Matrix matrix = new Matrix();
+		// 旋转图片
+		matrix.postRotate(angle);
+
+		// 最后一个参数为true,当有多个动画同时进行时可以改善动画的效果
+		Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+				bitmap.getHeight(), matrix, true);
+		return newBitmap;
 	}
 
 	/**
@@ -605,7 +724,34 @@ public class HandleImage {
 	 * @return
 	 */
 	public static int readPictureDegree(String imagePath) {
-		return 0;
+		int angle = 0;
+		try {
+			// ExifInterface用于获取图片的各类信息
+			ExifInterface exifInterface = new ExifInterface(imagePath);
+			// 获取图片方向
+			int orienation = exifInterface.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
+			switch (orienation) {
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				angle = 90;
+				break;
+
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				angle = 180;
+				break;
+
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				angle = 270;
+				break;
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+		return angle;
 	}
 
 	/**
@@ -616,8 +762,39 @@ public class HandleImage {
 	 * @param height
 	 * @return
 	 */
-	public static Bitmap getLocalThumbImage(String path, int width, int height) {
-		return null;
+	public static Bitmap getLocalThumbImage(String localImagePath, int width,
+			int height) {
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		// 解析图片,此时bitmap返回为空
+		Bitmap bitmap = BitmapFactory.decodeFile(localImagePath, options);
+
+		int originalWidth = options.outWidth;
+		int originalHeight = options.outHeight;
+
+		// 现在主流手机比较多是800*480分辨率
+		float compressWidth = width;
+		float compressHeight = height;
+
+		int ratio = 1;
+		if (originalWidth > originalHeight && originalWidth > compressWidth) {
+			ratio = (int) (originalWidth / compressWidth);
+		} else if (originalHeight > originalWidth
+				&& originalHeight > compressHeight) {
+			ratio = (int) (originalHeight / compressHeight);
+		}
+
+		if (ratio <= 0) {
+			ratio = 1;
+		}
+		options.inSampleSize = ratio;
+		options.inJustDecodeBounds = false;
+		// 重新载入图片
+		bitmap = BitmapFactory.decodeFile(localImagePath, options);
+		bitmap = compressImage(bitmap, 100); // 对图片进行大小压缩
+		int angle = readPictureDegree(localImagePath);
+		bitmap = rotateImageView(angle, bitmap);
+		return bitmap;
 	}
 
 	/**
@@ -626,8 +803,23 @@ public class HandleImage {
 	 * @param bitmapOriginal
 	 * @return
 	 */
-	public static Bitmap wipeGrayscale(Bitmap bitmapOriginal) {
-		return null;
+	public static Bitmap toGrayscale(Bitmap bitmapOriginal) {
+
+		int width = bitmapOriginal.getWidth();
+		int height = bitmapOriginal.getHeight();
+		// 生成一个新图
+		Bitmap bmpGrayscale = Bitmap.createBitmap(width, height,
+				Bitmap.Config.RGB_565);
+		Canvas canvas = new Canvas(bmpGrayscale);
+		Paint paint = new Paint();
+		ColorMatrix colorMatrix = new ColorMatrix();
+		// 设置图片的饱和度,0为灰,1为原图
+		colorMatrix.setSaturation(0);
+		ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+				colorMatrix);
+		paint.setColorFilter(colorFilter);
+		canvas.drawBitmap(bitmapOriginal, 0, 0, paint);
+		return bmpGrayscale;
 	}
 
 	/**
@@ -637,9 +829,9 @@ public class HandleImage {
 	 * @param pixels
 	 * @return
 	 */
-	public static Bitmap wipeGrayscaleAddRoundCorner(Bitmap bitmapOriginal,
+	public static Bitmap toGrayscaleAddRoundCorner(Bitmap bitmapOriginal,
 			int pixels) {
-		return null;
+		return toRoundCorner(toGrayscale(bitmapOriginal), pixels);
 	}
 
 	/**
@@ -657,7 +849,9 @@ public class HandleImage {
 	 * 把图片变成圆角，同时支持BitmapDrawable
 	 * 
 	 * @param bitmapDrawable
+	 *            需要修改的图片
 	 * @param pixels
+	 *            图片的弧度
 	 * @return
 	 */
 	public static Bitmap toRoundCorner(BitmapDrawable bitmapDrawable, int pixels) {
