@@ -23,6 +23,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -43,6 +44,17 @@ public class HandleImage {
 	 * 日志tag
 	 */
 	private static final String TAG = "HandleImage";
+
+	/**
+	 * 多张图片合成的指定方向
+	 */
+	private static final int LEFT = 0;
+
+	private static final int RIGHT = 1;
+
+	private static final int TOP = 2;
+
+	private static final int BOTTOM = 3;
 
 	/**
 	 * 把图片转换为圆角(不能自定义角度)
@@ -842,7 +854,28 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Bitmap toRoundCorner(Bitmap bitmap, int pixels) {
-		return null;
+		Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+				bitmap.getHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(outBitmap);
+		final int color = 0xff424242;
+		final Paint paint = new Paint();
+		// 设定画布的大小
+		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF = new RectF(rect);
+		final float roundPx = pixels;
+		paint.setAntiAlias(true);
+		// 黑色的画布
+		canvas.drawARGB(0, 0, 0, 0);
+		paint.setColor(color);
+		canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+		/**
+		 * 设置图像的相交模式 这是一个非常强大的转换模式，使用它， 可以使用图像合成的16条Porter-Duff规则的任意
+		 * 一条来控制Paint如何与已有的Canvas图像进行交互。 在两者相交的地方绘制源图像，并且绘制的效果会受到目标图像对应地方透明度的影响
+		 * (绘制出来的图像只有源图)
+		 * */
+		paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		canvas.drawBitmap(bitmap, rect, rect, paint);
+		return outBitmap;
 	}
 
 	/**
@@ -854,8 +887,11 @@ public class HandleImage {
 	 *            图片的弧度
 	 * @return
 	 */
-	public static Bitmap toRoundCorner(BitmapDrawable bitmapDrawable, int pixels) {
-		return null;
+	public static BitmapDrawable toRoundCorner(BitmapDrawable bitmapDrawable,
+			int pixels) {
+		Bitmap bitmap = bitmapDrawable.getBitmap();
+		bitmapDrawable = new BitmapDrawable(toRoundCorner(bitmap, pixels));
+		return bitmapDrawable;
 	}
 
 	/**
@@ -867,7 +903,27 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Bitmap createBitmapForWatrmark(Bitmap src, Bitmap watermark) {
-		return null;
+		if (src == null) {
+			return null;
+		}
+		int originalWidth = src.getWidth();
+		int originalHeight = src.getHeight();
+
+		int watermarkWidth = watermark.getWidth();
+		int watermarkHeight = watermark.getHeight();
+
+		// 创建一个与原来相同的bitmap
+		Bitmap bitmap = Bitmap.createBitmap(originalWidth, originalHeight,
+				Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+
+		// 按照原图绘制
+		canvas.drawBitmap(src, 0, 0, null);
+
+		// 在右下角绘制水印图片
+		canvas.drawBitmap(watermark, originalWidth - watermarkWidth + 5,
+				originalHeight - watermarkHeight + 5, null);
+		return bitmap;
 	}
 
 	/**
@@ -875,35 +931,141 @@ public class HandleImage {
 	 * 
 	 * @param direction
 	 * @param bitmaps
+	 *            多张图片()
 	 * @return
 	 */
 	public static Bitmap pictureToMix(int direction, Bitmap... bitmaps) {
-		return null;
+		if (bitmaps.length <= 0) {
+			return null;
+		}
+		if (bitmaps.length == 1) {
+			return bitmaps[0];
+		}
+		Bitmap newBitmap = bitmaps[0];
+		// 多个图片叠合
+		for (int i = 1; i < bitmaps.length; i++) {
+			newBitmap = pictureToMix(newBitmap, bitmaps[1], direction);
+		}
+		return newBitmap;
 	}
 
 	/**
 	 * 
-	 * 将两张图片合成，指定小图片的宽和高放在大图片的正中间位置
+	 * 根据指定的方向,将两张图片拼接合成
 	 * 
-	 * @param bigBitmap
-	 * @param smallBitmap
-	 * @param width
-	 * @param height
-	 * @param pixels
+	 * @param firstBitmap
+	 * @param secondBitmap
+	 * @param direction
+	 *            (第二张图片在合成图的位置)(0,1,2,3分别表示左、右、上、下)
+	 * @return
+	 */
+	public static Bitmap pictureToMix(Bitmap firstBitmap, Bitmap secondBitmap,
+			int direction) {
+		if (firstBitmap == null) {
+			return null;
+		}
+		if (secondBitmap == null) {
+			return firstBitmap;
+		}
+		int fh = firstBitmap.getHeight();
+		int fw = firstBitmap.getWidth();
+
+		int sh = secondBitmap.getHeight();
+		int sw = secondBitmap.getWidth();
+
+		Bitmap newBitmap = null;
+
+		if (direction == LEFT) {
+
+			newBitmap = Bitmap.createBitmap(fw + sw, fh > sh ? fh : sh,
+					Config.ARGB_8888);
+			Canvas canvas = new Canvas(newBitmap);
+			canvas.drawBitmap(firstBitmap, sw, 0, null);
+			canvas.drawBitmap(secondBitmap, 0, 0, null);
+		} else if (direction == RIGHT) {
+
+			newBitmap = Bitmap.createBitmap(fw + sw, fh > sh ? fh : sh,
+					Config.ARGB_8888);
+			Canvas canvas = new Canvas(newBitmap);
+			canvas.drawBitmap(firstBitmap, 0, 0, null);
+			canvas.drawBitmap(secondBitmap, fw, 0, null);
+
+		} else if (direction == TOP) {
+			newBitmap = Bitmap.createBitmap(fw + sw, fh > sh ? fh : sh,
+					Config.ARGB_8888);
+			Canvas canvas = new Canvas(newBitmap);
+			canvas.drawBitmap(firstBitmap, 0, sh, null);
+			canvas.drawBitmap(secondBitmap, 0, 0, null);
+		} else if (direction == BOTTOM) {
+			newBitmap = Bitmap.createBitmap(fw + sw, fh > sh ? fh : sh,
+					Config.ARGB_8888);
+			Canvas canvas = new Canvas(newBitmap);
+			canvas.drawBitmap(firstBitmap, 0, 0, null);
+			canvas.drawBitmap(secondBitmap, 0, fh, null);
+		}
+
+		return newBitmap;
+	}
+
+	/**
+	 * 指定两张图片合成,指定小图的宽和高在大图的正中央
+	 * 
+	 * @param bigBitmap背景图片
+	 * @param smallBitmap内容图片
+	 * @param width内容图片的宽
+	 * @param height内容图片的高
+	 * @param pixels内容图片圆角的度数
 	 * @return
 	 */
 	public static Bitmap pictureToMix(Bitmap bigBitmap, Bitmap smallBitmap,
 			int width, int height, int pixels) {
-		return null;
+		bigBitmap = bigBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		smallBitmap = smallBitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+		Canvas canvas = new Canvas(bigBitmap);
+		// 设定画笔
+		Paint paint = new Paint();
+
+		// 限制高宽
+		if (width != 0 && height != 0) {
+			smallBitmap = HandleImage.createBitmapBySize(smallBitmap, width,
+					height);
+		}
+		// 生成圆角
+		if (pixels != 0) {
+			smallBitmap = HandleImage.toRoundCorner(smallBitmap, pixels);
+		}
+
+		int bh = bigBitmap.getHeight();
+		int bw = bigBitmap.getWidth();
+		int sh = smallBitmap.getHeight();
+		int sw = smallBitmap.getWidth();
+		canvas.drawBitmap(smallBitmap, (bw - sw) / 2, (bh - sh) / 2, paint);
+		// canvas.save(Canvas.ALL_SAVE_FLAG);
+		// canvas.restore();
+		return bigBitmap;
 	}
 
 	/**
 	 * 保存图片为PNG格式
 	 * 
 	 * @param bitmap
-	 * @param name
+	 * @param path
 	 */
-	public static void savePNG(Bitmap bitmap, String name) {
+	public static void savePNG(Bitmap bitmap, String path) {
+		File file = new File(path);
+		try {
+			FileOutputStream outputStream = new FileOutputStream(file);
+			if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)) {
+				outputStream.flush();
+				outputStream.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
 	}
 
@@ -914,6 +1076,19 @@ public class HandleImage {
 	 * @param path
 	 */
 	public static void saveJPGE(Bitmap bitmap, String path) {
+		File file = new File(path);
+		try {
+			FileOutputStream outputStream = new FileOutputStream(file);
+			if (bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)) {
+				outputStream.flush();
+				outputStream.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
 	}
 
@@ -925,8 +1100,8 @@ public class HandleImage {
 	 * @param heihgt
 	 * @return
 	 */
-	public static Bitmap createBitmapBySize(Bitmap bitmap, int width, int heihgt) {
-		return null;
+	public static Bitmap createBitmapBySize(Bitmap bitmap, int width, int height) {
+		return Bitmap.createScaledBitmap(bitmap, width, height, true);
 	}
 
 	/**
@@ -936,7 +1111,8 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Drawable bitmapToDrawable(Bitmap bitmap) {
-		return null;
+		Drawable drawable = new BitmapDrawable(bitmap);
+		return drawable;
 	}
 
 	/**
@@ -946,15 +1122,21 @@ public class HandleImage {
 	 * @return
 	 */
 	public static Bitmap drawableToBitmap(Drawable drawable) {
-		return null;
+		BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+		return bitmapDrawable.getBitmap();
 	}
 
 	/**
 	 * 将byte[] 装换为 Bitmap
 	 * 
+	 * @param b
 	 * @return
 	 */
-	public static Bitmap bytesToBitmap() {
+	public static Bitmap bytesToBitmap(byte[] b) {
+
+		if (b.length > 0) {
+			return BitmapFactory.decodeByteArray(b, 0, b.length);
+		}
 		return null;
 	}
 
@@ -963,8 +1145,11 @@ public class HandleImage {
 	 * 
 	 * @return
 	 */
-	public static byte[] bitmapToBytes() {
-		return null;
+	public static byte[] bitmapToBytes(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		// 把图片资源放入到baos当中去
+		bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+		return baos.toByteArray();
 	}
 
 }
