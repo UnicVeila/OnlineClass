@@ -51,9 +51,10 @@ public class AppConstant {
 	/**
 	 * 轮播加载的图片资源url地址
 	 */
-	public static String[] imageUrl = { "http://www.anumbrella.net/app/a.jpg",
-			"http://www.anumbrella.net/app/b.jpg",
-			"http://www.anumbrella.net/app/c.jpg",
-			"http://www.anumbrella.net/app/d.jpg" };
+	public static String[] imageUrl = {
+			"http://www.anumbrella.net/app/OnlineClass/Image/a.jpg",
+			"http://www.anumbrella.net/app/OnlineClass/Image/b.jpg",
+			"http://www.anumbrella.net/app/OnlineClass/Image/c.jpg",
+			"http://www.anumbrella.net/app/OnlineClass/Image/d.jpg" };
 
 }

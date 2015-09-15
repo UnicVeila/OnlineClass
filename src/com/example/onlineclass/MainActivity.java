@@ -149,13 +149,13 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		imageCircleViews = new ImageView[count];
 		// 获取图标选着点显示的位置布局
 		imageCircleGroupView = (ViewGroup) findViewById(R.id.layout_circle_images);
-
+		
+	
 	}
 
 	// 初始化一些处理操作
 	private void initHandler() {
 		// TODO Auto-generated method stub
-
 		handler = new Handler() {
 
 			@Override

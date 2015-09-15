@@ -639,7 +639,7 @@ public class HandleImage {
 	 *            图片大小(kb)
 	 * @return
 	 */
-	private static Bitmap compressImage(Bitmap bitmap, int size) {
+	public static Bitmap compressImage(Bitmap bitmap, int size) {
 		// TODO Auto-generated method stub
 		try {
 

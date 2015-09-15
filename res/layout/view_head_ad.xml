@@ -5,11 +5,15 @@
     android:layout_height="110dip"
     android:focusable="true" >
 
+    <!-- 可滑动View -->
+
     <android.support.v4.view.ViewPager
         android:id="@+id/imgae_slide_pager"
         android:layout_width="match_parent"
         android:layout_height="130dip"
         android:focusable="true" />
+
+    <!-- 指示圆点图标 -->
 
     <RelativeLayout
         android:id="@+id/layout_title_text"
