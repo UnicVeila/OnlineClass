@@ -3,13 +3,17 @@ package com.example.onlineclass.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import android.R.integer;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -84,6 +88,43 @@ public class ImageLoaderUtil {
 		} else if (imageView != null && defaultImage != 0) {
 			// 如果不是本地异步图片,加载本地的资源id
 			imageView.setImageResource(defaultImage);
+		}
+
+	}
+
+	/**
+	 * 
+	 * 异步加载成圆角图片的形式
+	 * 
+	 * @param context
+	 *            上下文环境变量
+	 * @param imageView
+	 *            图片资源View
+	 * @param url
+	 *            图片url资源处
+	 * @param cacheLocalDir
+	 *            图片缓存地址
+	 * @param defaultImage
+	 *            默认图片的位置
+	 * @param compressWidth
+	 *            图片压缩的宽度
+	 */
+	public static void loadRoundedImageAsync(Context context,
+			ImageView imageView, String url, String cacheLocalDir,
+			int defaultImage, int compressWidth) {
+		Bitmap defaultBitmap = null;
+		if (defaultImage > 0) {
+			// 解析图片的资源
+			defaultBitmap = BitmapFactory.decodeResource(
+					context.getResources(), defaultImage);
+		}
+		// 首先进行网络异步图片获取
+		if (imageView != null && url != null && url.trim().length() > 0
+				&& !"nul".equals(url)) {
+			new ImageRoundAsyncTask().execute(imageView, url, cacheLocalDir,
+					defaultBitmap, compressWidth);
+		} else if (imageView != null && defaultBitmap != null) {
+			imageView.setImageBitmap(defaultBitmap);
 		}
 
 	}
@@ -329,6 +370,86 @@ public class ImageLoaderUtil {
 	}
 
 	/**
+	 * 异步加载圆角图片
+	 */
+	public static class ImageRoundAsyncTask extends
+			AsyncTask<Object, Object, Bitmap> {
+
+		/**
+		 * 单个图片存储View
+		 */
+		private ImageView imageView;
+
+		private String url;
+
+		/**
+		 * 本地缓存目录
+		 */
+		private String cacheLocalPathDir;
+
+		private Bitmap defaultBitmap = null;
+
+		/**
+		 * 最小缩放宽度
+		 */
+		private int minCompressWidth = 50;
+
+		/**
+		 * 缩放宽度
+		 */
+		private int compressWidth = 50;
+
+		@Override
+		protected Bitmap doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			imageView = (ImageView) params[0];
+			if (params.length > 1) {
+				url = (String) params[1];
+			}
+			if (params.length > 2) {
+				cacheLocalPathDir = (String) params[2];
+			}
+			if (params.length > 3) {
+				defaultBitmap = (Bitmap) params[3];
+			}
+			if (params.length > 4) {
+				compressWidth = (Integer) params[4];
+			}
+
+			Bitmap bitmap = null;
+
+			if (cacheLocalPathDir != null && url != null) {
+				File file = new File(cacheLocalPathDir + MD5.md5(url));
+				if (file.exists()) {
+					try {
+						FileInputStream inputStream = new FileInputStream(file);
+						bitmap = BitmapFactory.decodeStream(inputStream);
+					} catch (FileNotFoundException e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+				}
+			} else if (url != null) {
+				SoftReference<Bitmap> reference = imageCache.get(url);
+				if (reference != null) {
+					bitmap = reference.get();
+				}
+			}
+
+			return null;
+		}
+
+		/*
+		 * 在doInBackground()结束后返回的结果
+		 */
+		@Override
+		protected void onPostExecute(Bitmap result) {
+
+		}
+
+	}
+
+	/**
 	 * 根据路径保存并压缩图片
 	 * 
 	 * @param path
@@ -338,6 +459,21 @@ public class ImageLoaderUtil {
 		File file = new File(path);
 		if (!file.exists()) {
 			createDipPath(path);
+		}
+		FileOutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+		try {
+			outputStream.flush();
+			outputStream.close();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
 
 	}
