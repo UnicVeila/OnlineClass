@@ -435,8 +435,43 @@ public class ImageLoaderUtil {
 					bitmap = reference.get();
 				}
 			}
+			if (bitmap == null && url != null) {
+				try {
+					bitmap = BitmapFactory.decodeStream(new URL(url)
+							.openStream());
+				} catch (MalformedURLException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
 
-			return null;
+				if (bitmap != null && cacheLocalPathDir != null) {
+					if (compressWidth < minCompressWidth) {
+						compressWidth = minCompressWidth;
+					}
+
+					int compressHeight = 0;
+
+					if (compressWidth > bitmap.getWidth()) {
+						compressWidth = bitmap.getWidth();
+					}
+
+					compressHeight = bitmap.getHeight()
+							/ (bitmap.getWidth() / compressWidth);
+
+					// 创建压缩后的图片
+					bitmap = Bitmap.createScaledBitmap(bitmap, compressWidth,
+							compressHeight, true);
+					saveBitmpa(cacheLocalPathDir + MD5.md5(url), bitmap);
+				} else if (bitmap != null && url != null) {
+					imageCache.put(url, new SoftReference<Bitmap>(bitmap));
+				}
+
+			}
+
+			return bitmap;
 		}
 
 		/*
@@ -444,9 +479,13 @@ public class ImageLoaderUtil {
 		 */
 		@Override
 		protected void onPostExecute(Bitmap result) {
-
+			if (result != null) {
+				result = HandleImage.getRoundedCornerbitmap(result, 10);
+				imageView.setImageBitmap(result);
+			} else if (defaultBitmap != null) {
+				imageView.setImageBitmap(defaultBitmap);
+			}
 		}
-
 	}
 
 	/**
