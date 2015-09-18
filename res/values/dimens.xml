@@ -7,5 +7,13 @@
     <dimen name="main_title_text_padding">5dip</dimen>
     <dimen name="main_title_text_size">16sp</dimen>
     <dimen name="main_button_margin">4dip</dimen>
+    <dimen name="user_button_height">40dp</dimen>
+    <dimen name="user_button_width">110dp</dimen>
+    <dimen name="user_edit_height">40dp</dimen>
+
+    <!-- 文本值的大小设置 -->
+    <dimen name="text_h1">25sp</dimen>
+    <dimen name="text_h3">17sp</dimen>
+    <dimen name="text_h5">13dp</dimen>
 
 </resources>

@@ -13,5 +13,32 @@
     <string name="my_download">下载管理</string>
     <string name="sys_setting">系统设置</string>
     <string name="about_us">关于我们</string>
+    <string name="user_register">用户注册</string>
+    <string name="introduce">软件介绍</string>
+    <string name="company_eng_name">OClass</string>
+    <string name="app_version">v1.0</string>
+    <string name="check_update">检查更新</string>
+    <string name="server_phone">客服电话：400-0000-0000</string>
+    <string name="copyRight">Anumbrella科技有限公司版权所有</string>
+    <string name="please_login_text">请登录</string>
+    <string name="phone_text">手机号码</string>
+    <string name="password_text">输入密码</string>
+    <string name="login">登录</string>
+    <string name="ok">确认</string>
+    <string name="reset">重置</string>
+    <string name="no_register">还没有加入？</string>
+    <string name="register_text">立即注册！</string>
+    <string name="foget_password">忘记密码？</string>
+    <string name="find_password">立即找回！</string>
+    <string name="name_text">姓名</string>
+    <string name="sex_text">性别</string>
+    <string name="pwd_text">密码</string>
+    <string name="boy_text">男</string>
+    <string name="girl_text">女</string>
+    <string name="repwd_text">确认密码</string>
+    <string name="get_code_text">获取验证码</string>
+    <string name="code_text">验证码</string>
+    <string name="register">注册</string>
+    <string name="new_password_to_phone">新密码发送至手机</string>
 
 </resources>

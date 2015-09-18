@@ -11,5 +11,12 @@
     <color name="my_download_bg">#84d018</color>
     <color name="sys_setting_bg">#c8d900</color>
     <color name="about_us_bg">#22ad38</color>
+    <color name="base_text_color">#a5a5a5</color>
+    <color name="button_bg_color">#0fc4d9</color>
+    <color name="button_bg_color_selector">#747ae9</color>
+    <color name="font_tab_unselected_color">#dddddd</color>
+    <color name="font_tab_selected_color">#a5a5a5</color>
+    <color name="transparent">#00000000</color>
+    <color name="base_bar_bottom_color">#0fc4d9</color>
 
 </resources>
