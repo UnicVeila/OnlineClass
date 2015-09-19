@@ -3,6 +3,7 @@ package com.example.onlineclass;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,12 +13,24 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.onlineclass.R.id;
+import com.example.onlineclass.activity.AboutMsgActivity;
+import com.example.onlineclass.activity.AboutUsActivity;
 import com.example.onlineclass.activity.BaseActivity;
+import com.example.onlineclass.activity.ContactUsActivity;
+import com.example.onlineclass.activity.ExamActivity;
+import com.example.onlineclass.activity.FamousBookActivity;
+import com.example.onlineclass.activity.GameListActivity;
+import com.example.onlineclass.activity.GameRankActivity;
+import com.example.onlineclass.activity.GameRecordActivity;
+import com.example.onlineclass.activity.LoginActivity;
+import com.example.onlineclass.activity.MyDownloadActivity;
+import com.example.onlineclass.activity.SettingActivity;
+import com.example.onlineclass.activity.SyncActivity;
 import com.example.onlineclass.utils.AppConstant;
 import com.example.onlineclass.view.SlideImageViewLayout;
 
@@ -48,7 +61,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	/**
 	 * 设置关于我们的三个按钮
 	 */
-	private ImageView iv_contactUs, iv_about, iv_aboutMsg, iv_aboutUs;
+	private ImageView iv_contactUs, iv_aboutMsg, iv_aboutUs;
 
 	/**
 	 * 设置文学名著、用户管理、模拟考场、下载管理、用户充值、系统设置按钮
@@ -60,7 +73,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 * 是否自动开启轮播模式
 	 */
 	private boolean adAuto = true;
-
 
 	/**
 	 * 事件处理Handler
@@ -106,7 +118,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		// 初始化轮播选项
 		initHeadAd();
 		// 初始化视图选项
-		initView();		
+		initView();
 		adAuto = true;
 		adThread.start();
 	}
@@ -138,7 +150,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	private void initHandler() {
 		// TODO Auto-generated method stub
 		handler = new Handler() {
-
 			@Override
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
@@ -149,11 +160,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 				default:
 					break;
 				}
-
 			}
-
 		};
-
 	}
 
 	// 初始化视图资源获取
@@ -257,7 +265,64 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
+		int resId = R.drawable.number_pressed;
+		switch (resId) {
+		case R.id.btn_chinese:
+		case R.id.btn_number:
+		case R.id.btn_english:
+			if (v.getId() == R.id.btn_number) {
+				resId = R.drawable.number_pressed;
+			} else if (v.getId() == R.id.btn_english) {
+				resId = R.drawable.english_pressed;
+			} else if (v.getId() == R.id.btn_chinese) {
+				resId = R.drawable.chinese_pressed;
+			}
+			Intent intent = new Intent(MainActivity.this, SyncActivity.class);
+			intent.putExtra("resId", resId);
+			startActivity(intent);
+			break;
+		case R.id.layout_famous:
+			intent = new Intent(MainActivity.this, FamousBookActivity.class);
+			startActivity(intent);
+		case R.id.layout_download:
+			intent = new Intent(MainActivity.this, MyDownloadActivity.class);
+			startActivity(intent);
+		case R.id.layout_exam:
+			intent = new Intent(MainActivity.this, ExamActivity.class);
+			startActivity(intent);
+		case R.id.layout_setting:
+			intent = new Intent(MainActivity.this, SettingActivity.class);
+			startActivity(intent);
+		case R.id.layout_user:
+			intent = new Intent(MainActivity.this, LoginActivity.class);
+			startActivity(intent);
+			// 关于我们
+		case R.id.iv_about_us:
+			intent = new Intent(MainActivity.this, AboutUsActivity.class);
+			startActivity(intent);
+			// 关于应用信息
+		case R.id.iv_about_msg:
+			intent = new Intent(MainActivity.this, AboutMsgActivity.class);
+			startActivity(intent);
+			// 联系我们
+		case R.id.iv_contact_us:
+			intent = new Intent(MainActivity.this, ContactUsActivity.class);
+			startActivity(intent);
+			// 游戏菜单
+		case R.id.iv_game:
+			intent = new Intent(MainActivity.this, GameListActivity.class);
+			startActivity(intent);
+			// 游戏记录
+		case R.id.iv_record:
+			intent = new Intent(MainActivity.this, GameRecordActivity.class);
+			startActivity(intent);
+			// 游戏排名
+		case R.id.iv_rank:
+			intent = new Intent(MainActivity.this, GameRankActivity.class);
+			startActivity(intent);
+		default:
+			break;
+		}
 	}
 
 	/**

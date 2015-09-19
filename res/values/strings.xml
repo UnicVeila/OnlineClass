@@ -4,7 +4,6 @@
     <string name="app_name">在线课堂</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="syn_tech">同步教材</string>
     <string name="exam_room">模拟考场</string>
     <string name="famous_book">文学名著</string>
     <string name="best_head">最强大脑</string>
@@ -40,5 +39,6 @@
     <string name="code_text">验证码</string>
     <string name="register">注册</string>
     <string name="new_password_to_phone">新密码发送至手机</string>
+    <string name="syn_tech">同步教材</string>
 
 </resources>
