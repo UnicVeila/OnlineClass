@@ -26,6 +26,30 @@
         </activity>
         <activity android:name="com.example.onlineclass.activity.BaseActivity" >
         </activity>
+        <activity android:name="com.example.onlineclass.activity.AboutMsgActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.AboutUsActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.ContactUsActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.ExamActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.FamousBookActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.GameListActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.GameRankActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.GameRecordActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.LoginActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.MyDownloadActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.SettingActivity" >
+        </activity>
+        <activity android:name="com.example.onlineclass.activity.SyncTechActivity" >
+        </activity>
     </application>
 
 </manifest>

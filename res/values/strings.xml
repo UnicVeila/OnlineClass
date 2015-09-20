@@ -41,4 +41,9 @@
     <string name="new_password_to_phone">新密码发送至手机</string>
     <string name="syn_tech">同步教材</string>
 
+    <string-array name="sync_tech_array">
+        <item>本地教材</item>
+        <item>在线教材</item>
+    </string-array>
+
 </resources>

@@ -1,8 +1,8 @@
 package com.example.onlineclass.activity;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,7 +15,7 @@ import android.widget.TextView;
  * 
  *       基础的activity可以在这重写一些方法
  */
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
 	protected ActionBar actionBar;
 

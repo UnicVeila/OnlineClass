@@ -30,7 +30,7 @@ import com.example.onlineclass.activity.GameRecordActivity;
 import com.example.onlineclass.activity.LoginActivity;
 import com.example.onlineclass.activity.MyDownloadActivity;
 import com.example.onlineclass.activity.SettingActivity;
-import com.example.onlineclass.activity.SyncActivity;
+import com.example.onlineclass.activity.SyncTechActivity;
 import com.example.onlineclass.utils.AppConstant;
 import com.example.onlineclass.view.SlideImageViewLayout;
 
@@ -277,7 +277,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			} else if (v.getId() == R.id.btn_chinese) {
 				resId = R.drawable.chinese_pressed;
 			}
-			Intent intent = new Intent(MainActivity.this, SyncActivity.class);
+			Intent intent = new Intent(MainActivity.this, SyncTechActivity.class);
 			intent.putExtra("resId", resId);
 			startActivity(intent);
 			break;

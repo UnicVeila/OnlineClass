@@ -49,6 +49,19 @@ public class AppConstant {
 	public static final String APP_LOGFILE = APP_LOG_PATH + "log.txt";
 
 	/**
+	 * 设置(文学名著)type类型
+	 */
+	public static final int FAMOUS_BOOK = 100;
+	/**
+	 * 设置(最强大脑)type类型
+	 */
+	public static final int BEST_HEAD = 101;
+	/**
+	 * 设置(模拟考场)type类型
+	 */
+	public static final int EXAM = 102;
+
+	/**
 	 * 轮播加载的图片资源url地址
 	 */
 	public static String[] imageUrl = {
