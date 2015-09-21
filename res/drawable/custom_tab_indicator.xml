@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 有焦点的状态 -->
+    <item android:drawable="@drawable/tab_selected_example" android:state_focused="false" android:state_pressed="false" android:state_selected="true"/>
+
+    <!-- 点击没有焦点的状态 -->
+    <item android:drawable="@drawable/tab_unselected_pressed_example" android:state_pressed="true"/>
+
+</selector>

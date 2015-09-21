@@ -1,5 +1,6 @@
 package com.example.onlineclass.fragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -25,7 +26,7 @@ public class SyncTechFragment extends BaseFragment {
 
 	private SyncTechAdapter adapter;
 
-	private List<BookEntity> bookList;
+	private List<BookEntity> bookList = new ArrayList<BookEntity>();;
 
 	private int position = 0;
 

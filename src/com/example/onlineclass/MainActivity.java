@@ -10,14 +10,15 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.example.onlineclass.R.id;
 import com.example.onlineclass.activity.AboutMsgActivity;
 import com.example.onlineclass.activity.AboutUsActivity;
 import com.example.onlineclass.activity.BaseActivity;
@@ -264,9 +265,8 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		int resId = R.drawable.number_pressed;
-		switch (resId) {
+		switch (v.getId()) {
 		case R.id.btn_chinese:
 		case R.id.btn_number:
 		case R.id.btn_english:
@@ -277,22 +277,27 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			} else if (v.getId() == R.id.btn_chinese) {
 				resId = R.drawable.chinese_pressed;
 			}
-			Intent intent = new Intent(MainActivity.this, SyncTechActivity.class);
+			Intent intent = new Intent(MainActivity.this,
+					SyncTechActivity.class);
 			intent.putExtra("resId", resId);
 			startActivity(intent);
 			break;
 		case R.id.layout_famous:
 			intent = new Intent(MainActivity.this, FamousBookActivity.class);
 			startActivity(intent);
+			break;
 		case R.id.layout_download:
 			intent = new Intent(MainActivity.this, MyDownloadActivity.class);
 			startActivity(intent);
+			break;
 		case R.id.layout_exam:
 			intent = new Intent(MainActivity.this, ExamActivity.class);
 			startActivity(intent);
+			break;
 		case R.id.layout_setting:
 			intent = new Intent(MainActivity.this, SettingActivity.class);
 			startActivity(intent);
+			break;
 		case R.id.layout_user:
 			intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivity(intent);
@@ -300,27 +305,31 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		case R.id.iv_about_us:
 			intent = new Intent(MainActivity.this, AboutUsActivity.class);
 			startActivity(intent);
-			// 关于应用信息
+			break;
+		// 关于应用信息
 		case R.id.iv_about_msg:
 			intent = new Intent(MainActivity.this, AboutMsgActivity.class);
 			startActivity(intent);
-			// 联系我们
+			break;
+		// 联系我们
 		case R.id.iv_contact_us:
 			intent = new Intent(MainActivity.this, ContactUsActivity.class);
 			startActivity(intent);
-			// 游戏菜单
+			break;
+		// 游戏菜单
 		case R.id.iv_game:
 			intent = new Intent(MainActivity.this, GameListActivity.class);
 			startActivity(intent);
-			// 游戏记录
+			break;
+		// 游戏记录
 		case R.id.iv_record:
 			intent = new Intent(MainActivity.this, GameRecordActivity.class);
 			startActivity(intent);
-			// 游戏排名
+			break;
+		// 游戏排名
 		case R.id.iv_rank:
 			intent = new Intent(MainActivity.this, GameRankActivity.class);
 			startActivity(intent);
-		default:
 			break;
 		}
 	}

@@ -17,11 +17,13 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <!-- 定义app应用主题 -->
     <style name="Theme.Oclass" parent="@android:style/Theme.Light">
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <!-- 自定义Tab指示器样式 -->
     <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:background">@drawable/custom_tab_indicator</item>
         <item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>
@@ -35,6 +37,7 @@
         <item name="android:fadingEdgeLength">8dp</item>
     </style>
 
+    <!-- 自定义字体样式 -->
     <style name="CustomTabPageIndicator.Text" parent="android:TextAppearance.Medium">
         <item name="android:typeface">monospace</item>
     </style>

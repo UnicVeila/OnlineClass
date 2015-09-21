@@ -11,6 +11,7 @@
     <dimen name="user_button_width">110dp</dimen>
     <dimen name="user_edit_height">40dp</dimen>
     <dimen name="bar_bottom_height">50dp</dimen>
+    <dimen name="sync_tab_title_size">22sp</dimen>
 
     <!-- 文本值的大小设置 -->
     <dimen name="text_h1">25sp</dimen>

@@ -77,13 +77,13 @@ public class SyncTechAdapter extends BaseAdapter {
 
 		if (book.getType() == AppConstant.FAMOUS_BOOK) {
 			holder.iv_book.setImageResource(R.drawable.b_default);
-			holder.tv_name.setText("三个火枪手");
+			holder.tv_name.setText("三个火枪手" + position);
 		} else if (book.getType() == AppConstant.EXAM) {
 			holder.layout_bg.setBackgroundResource(R.drawable.exam_book_bg);
-			holder.tv_name.setText("新课标\n语文\n三年级\n下");
+			holder.tv_name.setText("新课标" + position + "\n语文\n三年级\n下");
 		} else {
 			holder.iv_book.setImageResource(R.drawable.english_default);
-			holder.tv_name.setText("新课标\nEnglish\nthree\n下");
+			holder.tv_name.setText("新课标" + position + "\n语文\n三年级\n下");
 		}
 		return convertView;
 	}

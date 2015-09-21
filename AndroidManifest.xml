@@ -24,31 +24,70 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.onlineclass.activity.BaseActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.BaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.AboutMsgActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.AboutMsgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.AboutUsActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.AboutUsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.ContactUsActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.ContactUsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.ExamActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.ExamActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.FamousBookActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.FamousBookActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.GameListActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.GameListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.GameRankActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.GameRankActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.GameRecordActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.GameRecordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.LoginActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.MyDownloadActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.MyDownloadActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.SettingActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.SettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
-        <activity android:name="com.example.onlineclass.activity.SyncTechActivity" >
+        <activity
+            android:name="com.example.onlineclass.activity.SyncTechActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
         </activity>
     </application>
 
