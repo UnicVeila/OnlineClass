@@ -31,7 +31,7 @@ import android.support.v4.view.ViewPager;
  *       /*_*英语比较差,欢迎指正
  * 
  */
-public interface PagerIndicator extends ViewPager.OnPageChangeListener {
+public interface PageIndicator extends ViewPager.OnPageChangeListener {
 
 	/**
 	 * 绑定指示器到ViewPager

@@ -43,7 +43,7 @@ import com.example.onlineclass.R;
  *       TabPageIndicator可以根据配置让widget实现bar上的tab动态改变。
  */
 public class TabPageIndicator extends HorizontalScrollView implements
-		PagerIndicator {
+		PageIndicator {
 
 	/**
 	 * 当adapter没有提供主题时,默认使用该主题

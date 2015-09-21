@@ -1,36 +1,35 @@
 package com.example.onlineclass.adapter;
 
+import com.example.onlineclass.R;
+import com.example.onlineclass.fragment.FamousBookFragment;
+
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.onlineclass.R;
-import com.example.onlineclass.fragment.SyncTechFragment;
-
 /**
  * @author anumbrella
  * 
- * @date 2015-9-20 下午2:58:32
+ * @date 2015-9-21 下午1:11:53
  * 
- *       同步教学Fragment适配器
+ *       文学名著activity的fragment的适配器
  */
-public class SyncTechFragmentAdapter extends FragmentPagerAdapter {
+public class FamousBookFragmentAdapter extends FragmentPagerAdapter {
 
 	/**
 	 * 选项卡标题数组
 	 */
-	private String[] titleStr;
+	private String[] titleStr = null;
 
-	public SyncTechFragmentAdapter(FragmentManager fm) {
+	public FamousBookFragmentAdapter(FragmentManager fm) {
 		super(fm);
 	}
 
-	public SyncTechFragmentAdapter(FragmentManager fm, Context context) {
+	public FamousBookFragmentAdapter(FragmentManager fm, Context context) {
 		super(fm);
-		// 从xml中获取字符串资源
 		titleStr = context.getResources().getStringArray(
-				R.array.sync_tech_array);
+				R.array.famous_book_array);
 
 	}
 
@@ -46,13 +45,11 @@ public class SyncTechFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-
 		switch (position) {
 		case 0:
 		case 1:
-			return SyncTechFragment.newInstance(position);
+			return new FamousBookFragment().newInstance(position);
 		}
-
 		return null;
 	}
 

@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.onlineclass.R;
 import com.example.onlineclass.adapter.SyncTechAdapter;
 import com.example.onlineclass.model.BookEntity;
+import com.example.onlineclass.utils.AppConstant;
 
 /**
  * @author anumbrella
  * 
- * @date 2015-9-20 下午3:09:25
+ * @date 2015-9-21 下午2:31:30
  * 
- *       同步教学Fragment
+ *       模拟考场和答案解析Fragment界面
  */
-public class SyncTechFragment extends BaseFragment {
+public class ExamFragment extends BaseFragment {
 
 	private GridView gridView;
 
@@ -32,13 +34,12 @@ public class SyncTechFragment extends BaseFragment {
 	private List<BookEntity> bookList = new ArrayList<BookEntity>();;
 
 	private int position = 0;
-
-	public static SyncTechFragment newInstance(int position) {
-		SyncTechFragment syncTechFragment = new SyncTechFragment();
+	public static ExamFragment newInstance(int position) {
+		ExamFragment examFragment = new ExamFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt("position", position);
-		syncTechFragment.setArguments(bundle);
-		return syncTechFragment;
+		examFragment.setArguments(bundle);
+		return examFragment;
 
 	}
 
@@ -50,11 +51,12 @@ public class SyncTechFragment extends BaseFragment {
 		gridView = (GridView) contentView.findViewById(R.id.gridview);
 		// 获取fragment中的数据
 		parseArgument();
-
 		if (position == 0) {
-			initLocalData();
+			initExamData();
+			Log.i("anumbrella33", position + "ExamData");
 		} else {
-			initOnlineData();
+			initQuestionData();
+			Log.i("anumbrella33", position + "QuestionData");
 		}
 		adapter = new SyncTechAdapter(getActivity(), bookList, false);
 		gridView.setAdapter(adapter);
@@ -69,15 +71,16 @@ public class SyncTechFragment extends BaseFragment {
 						Toast.LENGTH_SHORT).show();
 			}
 		});
-		return gridView;
+		return contentView;
 	}
 
 	/**
 	 * 模拟在线获取的数据
 	 */
-	private void initOnlineData() {
+	private void initExamData() {
 		for (int i = 0; i < 6; i++) {
 			BookEntity book = new BookEntity();
+			book.setType(AppConstant.EXAM);
 			bookList.add(book);
 		}
 
@@ -86,12 +89,12 @@ public class SyncTechFragment extends BaseFragment {
 	/**
 	 * 加载本地数据
 	 */
-	private void initLocalData() {
-		for (int i = 0; i < 9; i++) {
+	private void initQuestionData() {
+		for (int i = 0; i < 2; i++) {
 			BookEntity book = new BookEntity();
+			book.setType(AppConstant.EXAM);
 			bookList.add(book);
 		}
-
 	}
 
 	/**
@@ -101,5 +104,4 @@ public class SyncTechFragment extends BaseFragment {
 		Bundle bundle = getArguments();
 		position = bundle.getInt("position");
 	}
-
 }

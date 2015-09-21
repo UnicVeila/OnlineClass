@@ -29,9 +29,9 @@ public class SyncTechActivity extends BaseActivity implements OnClickListener {
 		setContentView(R.layout.activity_sync_tech);
 		// 初始化视图
 		initView();
-		
-		//接收intent传过来的数据
-		int resId = getIntent().getIntExtra("resId", R.drawable.number_pressed);
+
+		// 接收intent传过来的数据
+		int resId = getIntent().getIntExtra("resId", R.drawable.exam_pressed);
 		iv_title.setImageResource(resId);
 		tv_title.setText(getResources().getString(R.string.syn_tech));
 	}
@@ -64,7 +64,6 @@ public class SyncTechActivity extends BaseActivity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_search:
-
 			break;
 		}
 	}

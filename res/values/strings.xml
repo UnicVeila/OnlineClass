@@ -45,5 +45,14 @@
         <item>本地教材</item>
         <item>在线教材</item>
     </string-array>
+    <string-array name="famous_book_array">
+        <item>本地书城</item>
+        <item>在线书城</item>
+    </string-array>
+    <string-array name="exam_array">
+        <item>模拟考场</item>
+        <item>考试成绩</item>
+        <item>答案解析</item>
+    </string-array>
 
 </resources>

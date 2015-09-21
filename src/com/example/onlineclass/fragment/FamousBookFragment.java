@@ -8,23 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.onlineclass.R;
 import com.example.onlineclass.adapter.SyncTechAdapter;
 import com.example.onlineclass.model.BookEntity;
+import com.example.onlineclass.utils.AppConstant;
 
-/**
- * @author anumbrella
- * 
- * @date 2015-9-20 下午3:09:25
- * 
- *       同步教学Fragment
- */
-public class SyncTechFragment extends BaseFragment {
-
+public class FamousBookFragment extends BaseFragment {
 	private GridView gridView;
 
 	private SyncTechAdapter adapter;
@@ -33,12 +26,12 @@ public class SyncTechFragment extends BaseFragment {
 
 	private int position = 0;
 
-	public static SyncTechFragment newInstance(int position) {
-		SyncTechFragment syncTechFragment = new SyncTechFragment();
+	public static FamousBookFragment newInstance(int position) {
+		FamousBookFragment famousBookFragment = new FamousBookFragment();
 		Bundle bundle = new Bundle();
 		bundle.putInt("position", position);
-		syncTechFragment.setArguments(bundle);
-		return syncTechFragment;
+		famousBookFragment.setArguments(bundle);
+		return famousBookFragment;
 
 	}
 
@@ -56,7 +49,7 @@ public class SyncTechFragment extends BaseFragment {
 		} else {
 			initOnlineData();
 		}
-		adapter = new SyncTechAdapter(getActivity(), bookList, false);
+		adapter = new SyncTechAdapter(getActivity(), bookList, true);
 		gridView.setAdapter(adapter);
 		// 为每一给Item添加点击事件
 		gridView.setOnItemClickListener(new OnItemClickListener() {
@@ -78,6 +71,7 @@ public class SyncTechFragment extends BaseFragment {
 	private void initOnlineData() {
 		for (int i = 0; i < 6; i++) {
 			BookEntity book = new BookEntity();
+			book.setType(AppConstant.FAMOUS_BOOK);
 			bookList.add(book);
 		}
 
@@ -89,6 +83,7 @@ public class SyncTechFragment extends BaseFragment {
 	private void initLocalData() {
 		for (int i = 0; i < 9; i++) {
 			BookEntity book = new BookEntity();
+			book.setType(AppConstant.FAMOUS_BOOK);
 			bookList.add(book);
 		}
 

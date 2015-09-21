@@ -301,6 +301,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 		case R.id.layout_user:
 			intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivity(intent);
+			break;
 			// 关于我们
 		case R.id.iv_about_us:
 			intent = new Intent(MainActivity.this, AboutUsActivity.class);
