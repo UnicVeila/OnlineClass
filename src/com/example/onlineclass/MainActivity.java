@@ -10,24 +10,20 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.onlineclass.activity.AboutMsgActivity;
 import com.example.onlineclass.activity.AboutUsActivity;
 import com.example.onlineclass.activity.BaseActivity;
+import com.example.onlineclass.activity.BestHeadActivity;
 import com.example.onlineclass.activity.ContactUsActivity;
 import com.example.onlineclass.activity.ExamActivity;
 import com.example.onlineclass.activity.FamousBookActivity;
-import com.example.onlineclass.activity.GameListActivity;
-import com.example.onlineclass.activity.GameRankActivity;
-import com.example.onlineclass.activity.GameRecordActivity;
 import com.example.onlineclass.activity.LoginActivity;
 import com.example.onlineclass.activity.MyDownloadActivity;
 import com.example.onlineclass.activity.SettingActivity;
@@ -302,7 +298,7 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			intent = new Intent(MainActivity.this, LoginActivity.class);
 			startActivity(intent);
 			break;
-			// 关于我们
+		// 关于我们
 		case R.id.iv_about_us:
 			intent = new Intent(MainActivity.this, AboutUsActivity.class);
 			startActivity(intent);
@@ -319,17 +315,23 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			break;
 		// 游戏菜单
 		case R.id.iv_game:
-			intent = new Intent(MainActivity.this, GameListActivity.class);
+			resId = R.drawable.best_head1_pressed;
+			intent = new Intent(MainActivity.this, BestHeadActivity.class);
+			intent.putExtra("resId", resId);
 			startActivity(intent);
 			break;
 		// 游戏记录
 		case R.id.iv_record:
-			intent = new Intent(MainActivity.this, GameRecordActivity.class);
+			resId = R.drawable.best_head2_pressed;
+			intent = new Intent(MainActivity.this, BestHeadActivity.class);
+			intent.putExtra("resId", resId);
 			startActivity(intent);
 			break;
 		// 游戏排名
 		case R.id.iv_rank:
-			intent = new Intent(MainActivity.this, GameRankActivity.class);
+			resId = R.drawable.best_head3_pressed;
+			intent = new Intent(MainActivity.this, BestHeadActivity.class);
+			intent.putExtra("resId", resId);
 			startActivity(intent);
 			break;
 		}

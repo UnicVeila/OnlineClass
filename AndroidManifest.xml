@@ -55,17 +55,7 @@
             android:theme="@style/Theme.Oclass" >
         </activity>
         <activity
-            android:name="com.example.onlineclass.activity.GameListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Oclass" >
-        </activity>
-        <activity
-            android:name="com.example.onlineclass.activity.GameRankActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Oclass" >
-        </activity>
-        <activity
-            android:name="com.example.onlineclass.activity.GameRecordActivity"
+            android:name="com.example.onlineclass.activity.BestHeadActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Oclass" >
         </activity>

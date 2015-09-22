@@ -34,6 +34,7 @@ public class ExamFragment extends BaseFragment {
 	private List<BookEntity> bookList = new ArrayList<BookEntity>();;
 
 	private int position = 0;
+
 	public static ExamFragment newInstance(int position) {
 		ExamFragment examFragment = new ExamFragment();
 		Bundle bundle = new Bundle();
@@ -78,12 +79,13 @@ public class ExamFragment extends BaseFragment {
 	 * 模拟在线获取的数据
 	 */
 	private void initExamData() {
-		for (int i = 0; i < 6; i++) {
-			BookEntity book = new BookEntity();
-			book.setType(AppConstant.EXAM);
-			bookList.add(book);
+		if (bookList.size() == 0) {
+			for (int i = 0; i < 6; i++) {
+				BookEntity book = new BookEntity();
+				book.setType(AppConstant.EXAM);
+				bookList.add(book);
+			}
 		}
-
 	}
 
 	/**
