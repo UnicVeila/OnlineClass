@@ -26,6 +26,7 @@ import com.example.onlineclass.activity.ExamActivity;
 import com.example.onlineclass.activity.FamousBookActivity;
 import com.example.onlineclass.activity.LoginActivity;
 import com.example.onlineclass.activity.MyDownloadActivity;
+import com.example.onlineclass.activity.PayActivity;
 import com.example.onlineclass.activity.SettingActivity;
 import com.example.onlineclass.activity.SyncTechActivity;
 import com.example.onlineclass.utils.AppConstant;
@@ -332,6 +333,11 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 			resId = R.drawable.best_head3_pressed;
 			intent = new Intent(MainActivity.this, BestHeadActivity.class);
 			intent.putExtra("resId", resId);
+			startActivity(intent);
+			break;
+
+		case R.id.layout_pay:
+			intent = new Intent(MainActivity.this, PayActivity.class);
 			startActivity(intent);
 			break;
 		}

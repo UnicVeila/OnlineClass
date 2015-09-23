@@ -40,6 +40,16 @@
     <string name="register">注册</string>
     <string name="new_password_to_phone">新密码发送至手机</string>
     <string name="syn_tech">同步教材</string>
+    <string name="password_find">密码找回</string>
+    <string name="card_text">卡号</string>
+    <string name="card_pwd_text">卡密码</string>
+    <string name="pay_account_text">充值账号</string>
+    <string name="repay_account_text">账号确认</string>
+    <string name="pay_account_ok">充值</string>
+    <string name="add_account">账戶充值</string>
+    <string name="card_number">欧科卡号：</string>
+    <string name="account_number">账号：</string>
+    <string name="pay_yes_or_no">是否确认充值？</string>
 
     <string-array name="sync_tech_array">
         <item>本地教材</item>

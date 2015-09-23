@@ -5,7 +5,7 @@ package com.example.onlineclass.activity;
  * 
  * @date 2015-9-19 上午9:10:15
  * 
- *       我的下载界面
+ *       下载管理activity
  */
 public class MyDownloadActivity extends BaseActivity {
 

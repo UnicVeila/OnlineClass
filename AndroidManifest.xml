@@ -79,6 +79,26 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Oclass" >
         </activity>
+        <activity
+            android:name="com.example.onlineclass.activity.FindPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
+        </activity>
+        <activity
+            android:name="com.example.onlineclass.activity.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
+        </activity>
+        <activity
+            android:name="com.example.onlineclass.activity.PayActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
+        </activity>
+        <activity
+            android:name="com.example.onlineclass.activity.PayOkActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Oclass" >
+        </activity>
     </application>
 
 </manifest>

@@ -12,11 +12,11 @@
         android:layout_weight="1" >
 
         <Button
-            android:id="@+id/btn_home"
+            android:id="@+id/btn_back"
             android:layout_width="45dip"
             android:layout_height="45dip"
             android:layout_marginTop="13dip"
-            android:background="@drawable/user_home"
+            android:background="@drawable/back_head"
             android:contentDescription="@string/app_name" />
 
         <ImageView
@@ -92,7 +92,7 @@
                 android:textSize="@dimen/text_h3" />
 
             <TextView
-                android:id="@+id/iv_register"
+                android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_text"
