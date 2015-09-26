@@ -2,10 +2,10 @@ package com.example.onlineclass.app;
 
 import java.util.LinkedList;
 
-import com.example.onlineclass.utils.AppConstant;
-
 import android.app.Activity;
 import android.app.Application;
+
+import com.example.onlineclass.utils.AppConstant;
 
 /**
  * @author anumbrella
@@ -44,7 +44,8 @@ public class InitApplication extends Application {
 		instance = this;
 		// 启动捕获异常日志记录监听检查
 		if (AppConstant.CHECK_UP) {
-
+			CrashHandler catchExcep = new CrashHandler(this);
+			Thread.setDefaultUncaughtExceptionHandler(catchExcep);
 		}
 		activityList = new LinkedList<Activity>();
 		super.onCreate();
