@@ -50,6 +50,10 @@
     <string name="card_number">欧科卡号：</string>
     <string name="account_number">账号：</string>
     <string name="pay_yes_or_no">是否确认充值？</string>
+    <string name="default_setting">默认\n设置</string>
+    <string name="base_text">基本介绍</string>
+    <string name="download_text">下载安装</string>
+    <string name="register_login_text">注册登录</string>
 
     <string-array name="sync_tech_array">
         <item>本地教材</item>
@@ -68,6 +72,15 @@
         <item>游戏列表</item>
         <item>奖励记录</item>
         <item>最强排名</item>
+    </string-array>
+    <string-array name="download_array">
+        <item>正在下载</item>
+        <item>已下载</item>
+    </string-array>
+    <string-array name="setting_array">
+        <item>主题色</item>
+        <item>字体大小</item>
+        <item>帮助</item>
     </string-array>
 
 </resources>

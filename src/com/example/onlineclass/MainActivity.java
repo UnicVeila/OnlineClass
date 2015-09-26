@@ -155,8 +155,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 					upadteSelectedStatus();
 					viewPager.setCurrentItem(pageIndex);
 					break;
-				default:
-					break;
 				}
 			}
 		};
@@ -164,7 +162,6 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 	// 初始化视图资源获取
 	private void initView() {
-		// TODO Auto-generated method stub
 		layout_famous = (LinearLayout) findViewById(R.id.layout_famous);
 		layout_download = (LinearLayout) findViewById(R.id.layout_download);
 		layout_setting = (LinearLayout) findViewById(R.id.layout_setting);
@@ -389,19 +386,16 @@ public class MainActivity extends BaseActivity implements OnClickListener {
 
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void onPageSelected(int index) {
-			// TODO Auto-generated method stub
 			pageIndex = index;
 			// 更新指示小圆点的状态
 			upadteSelectedStatus();

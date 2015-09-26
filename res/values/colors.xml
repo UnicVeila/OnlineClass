@@ -18,5 +18,6 @@
     <color name="font_tab_selected_color">#a5a5a5</color>
     <color name="transparent">#00000000</color>
     <color name="base_bar_bottom_color">#0fc4d9</color>
+    <color name="biz_tie_reply">#ff545454</color>
 
 </resources>
